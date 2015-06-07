@@ -126,24 +126,15 @@ while(digitalRead(12)){
   
                     }
 void set_timer(void){
-    char customKey = customKeypad.getKey();
-
-while(!customKey){}
-  a=customKey;
-  Serial.parseInt(a);
-while(!customKey){}
-  timer=1000*a;
-  a=customKey;
-  timer+=(100*a);
-  Serial.parseInt(a);
-while(!customKey){}
-  a=customKey;
-  timer+=(10*a);
-  Serial.parseInt(a);               
-while(!customKey){}
-  a=customKey;
-  timer+=a;
-  Serial.parseInt(a);  
+  byte n=0;
+  timer=0;
+  while(n<4){
+char customKey2 = customKeypad.getKey();
+if (customKey2){
+    Serial.print(customKey2);
+          timer+=(customKey2*(10^n));  
+           n++; }
+  }
                   }
 
 
