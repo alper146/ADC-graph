@@ -34,14 +34,19 @@ void send_adc(void);
 void set_timer(void);
 
 void setup(){
-pinMode(12,INPUT);  //to check ready pin
-pinMode(sspin,OUTPUT);
-digitalWrite(sspin,HIGH);//for single conversion
+DDRB&=~(1<<4);
+//pinMode(12,INPUT);  //to check ready pin
+DDRB|=(1<<2);
+DDRC|=(1<<5);
+
+//pinMode(sspin,OUTPUT);
+PORTB|=(1<<2);
+//digitalWrite(sspin,HIGH);//for single conversion
 SPI.begin();
 SPI.setBitOrder(MSBFIRST);
 SPI.setDataMode(SPI_MODE3);
-SPI.setClockDivider(SPI_CLOCK_DIV16);//max. speed of chip is 5 Mhz
-Serial.begin(9600);  
+SPI.setClockDivider(SPI_CLOCK_DIV8);//max. speed of chip is 5 Mhz
+Serial.begin(115200);  
 
 }
 
@@ -81,19 +86,21 @@ switch(task){
   //char customKey = customKeypad.getKey();
 
   while(command==1){
-  
-  digitalWrite(sspin,LOW);
+  PORTC|=(1<<5);
+ PORTB&=~(1<<2);
 
 while(digitalRead(12)){
   
-  digitalWrite(sspin,LOW);
+  //digitalWrite(sspin,LOW);
                     
                     }
+                    PORTC&=~(1<<5);
   c.aa[2]=SPI.transfer(0x00);
   c.aa[1]=SPI.transfer(0x00);
   c.aa[0]=SPI.transfer(0x00);
   c.aa[3]=0x00;
-  digitalWrite(sspin,HIGH);
+  
+ PORTB|=(1<<2);
   //check if overflow has occured
   if((c.aa[2]&(1<<6))|(c.aa[2]&(1<<7))){
     c.aa[2]&=~(1<<6);

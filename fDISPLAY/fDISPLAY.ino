@@ -137,7 +137,7 @@ case 3:
  
 }
 void setup(void) {
-  Serial.begin(9600);
+  Serial.begin(115200);
   tft.reset();
   uint16_t identifier = tft.readID();
 
